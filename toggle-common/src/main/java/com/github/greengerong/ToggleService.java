@@ -1,4 +1,4 @@
-package greengerong;
+package com.github.greengerong;
 
 import java.util.Map;
 import java.util.function.Supplier;

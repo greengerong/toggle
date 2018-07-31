@@ -1,0 +1,6 @@
+
+feature-toggle:
+  store-way: properties
+  features:
+    foo: true
+    bar: false

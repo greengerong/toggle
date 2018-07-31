@@ -1,10 +1,6 @@
-package greengerong;
+package com.github.greengerong;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.util.Map;
 
 /******************************************
  *                                        *
@@ -14,11 +10,9 @@ import java.lang.annotation.Target;
  * github: https://github.com/greengerong *
  *                                        *
  ******************************************/
-@Target({ElementType.METHOD})
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-public @interface FeatureToggle {
+public interface FeaturesFetcher {
 
-    String value();
+    boolean isEnableOnEmpty();
 
+    Map<String, Boolean> getFeatures();
 }

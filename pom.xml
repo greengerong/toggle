@@ -11,6 +11,7 @@
     <modules>
         <module>toggle-common</module>
         <module>toggle-spring-boot-starter</module>
+        <module>toggle-spring-sample</module>
     </modules>
 
     <properties>

@@ -3,7 +3,6 @@ package com.github.greengerong;
 import java.util.HashMap;
 import java.util.Map;
 
-import greengerong.FeaturesFetcher;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 

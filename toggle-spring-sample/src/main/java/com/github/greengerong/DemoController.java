@@ -1,4 +1,6 @@
-package greengerong;
+package com.github.greengerong;
+
+import org.springframework.web.bind.annotation.RestController;
 
 /******************************************
  *                                        *
@@ -8,8 +10,16 @@ package greengerong;
  * github: https://github.com/greengerong *
  *                                        *
  ******************************************/
-public class FeatureToggleAspectException extends RuntimeException {
-    public FeatureToggleAspectException(Throwable throwable) {
-        super(throwable);
+@RestController("demo")
+public class DemoController {
+
+//    @FeatureToggle("foo")
+    public String foo() {
+        return "foo call";
+    }
+
+//    @FeatureToggle("bar")
+    public String bar() {
+        return "bar call";
     }
 }
