@@ -1,8 +1,10 @@
 package com.github.greengerong;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,33 +24,28 @@ import org.springframework.context.annotation.Configuration;
 public class ToggleAutoConfigure {
 
     private final ToggleConfig toggleConfig;
-    private ToggleService toggleService;
 
     @Autowired
     public ToggleAutoConfigure(ToggleConfig toggleConfig) {
         this.toggleConfig = toggleConfig;
-        toggleService = new ToggleService(toggleConfig);
     }
 
     @Bean
     @ConditionalOnMissingBean
-//    @Order(100)
     public ToggleService toggleService() {
-        return toggleService;
+        return new ToggleService(toggleConfig);
     }
 
     @Bean
-//    @ConditionalOnMissingBean
-//    @ConditionalOnProperty(prefix = "feature-toggle", value = "store-way", havingValue = "properties", matchIfMissing = true)
-//    @Order(10)
-    public FeatureToggleAspect featureToggleAspect() {
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(prefix = "feature-toggle", value = "store-way", havingValue = "properties", matchIfMissing = true)
+    public FeatureToggleAspect featureToggleAspect(@Autowired ToggleService toggleService) {
         return new FeatureToggleAspect(toggleService);
     }
 
-    //    @ConditionalOnBean(ToggleService.class)
-//    @Order(10)
     @Bean
-    public ToggleEndpoint toggleEndpoint() {
+    @ConditionalOnBean(ToggleService.class)
+    public ToggleEndpoint toggleEndpoint(@Autowired ToggleService toggleService) {
         return new ToggleEndpoint(toggleService);
     }
 }
