@@ -1,0 +1,11 @@
+.idea/
+.project
+.classpath
+.settings/
+target/
+**/target/
+**/.idea/
+*.iml
+
+### OSX ###
+.DS_Store
