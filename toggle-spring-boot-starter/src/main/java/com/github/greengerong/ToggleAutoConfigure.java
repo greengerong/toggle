@@ -24,7 +24,7 @@ public class ToggleAutoConfigure {
 
 
     @Configuration
-    @ConditionalOnProperty(prefix = "feature-toggle", value = "store-way", havingValue = "properties", matchIfMissing = true)
+    @ConditionalOnProperty(prefix = "feature-toggle", value = "storage", havingValue = "properties", matchIfMissing = true)
     protected static class PropertiesToggleServiceConfiguration {
 
         @Bean
@@ -42,7 +42,7 @@ public class ToggleAutoConfigure {
     }
 
     @Configuration
-    @ConditionalOnProperty(prefix = "feature-toggle", value = "store-way", havingValue = "jdbc")
+    @ConditionalOnProperty(prefix = "feature-toggle", value = "storage", havingValue = "jdbc")
     protected static class JdbcToggleServiceConfiguration {
         @Bean
         @ConditionalOnMissingBean

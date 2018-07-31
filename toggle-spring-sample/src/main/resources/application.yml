@@ -7,7 +7,7 @@ server:
 
 
 feature-toggle:
-#  store-way: jdbc
+#  storage: jdbc
   features:
     foo: false
     bar: true
