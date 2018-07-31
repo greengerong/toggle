@@ -1,4 +1,4 @@
-package com.github.greengerong;
+package greengerong;
 
 import java.util.Map;
 import java.util.function.Supplier;
@@ -14,19 +14,13 @@ import java.util.function.Supplier;
 public class ToggleService {
 
     private final FeaturesFetcher featuresFetcher;
-    private final boolean enableOnEmpty;
 
     public ToggleService(FeaturesFetcher featuresFetcher) {
-        this(featuresFetcher, false);
-    }
-
-    public ToggleService(FeaturesFetcher featuresFetcher, boolean enableOnEmpty) {
         this.featuresFetcher = featuresFetcher;
-        this.enableOnEmpty = enableOnEmpty;
     }
 
     public boolean isActive(String feature) {
-        return features().getOrDefault(feature, enableOnEmpty);
+        return features().getOrDefault(feature, featuresFetcher.isEnableOnEmpty());
     }
 
     public void toggle(String feature, Runnable enable) {
@@ -48,8 +42,8 @@ public class ToggleService {
         return runnable.get();
     }
 
-    private Map<String, Boolean> features() {
-        return this.featuresFetcher.features();
+    public Map<String, Boolean> features() {
+        return this.featuresFetcher.getFeatures();
     }
 
 }

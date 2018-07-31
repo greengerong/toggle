@@ -1,4 +1,4 @@
-package com.github.greengerong;
+package greengerong;
 
 import java.util.Optional;
 

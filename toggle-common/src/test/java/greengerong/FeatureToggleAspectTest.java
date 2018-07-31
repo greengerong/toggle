@@ -1,4 +1,4 @@
-package com.github.greengerong;
+package greengerong;
 
 import java.lang.reflect.Method;
 import java.util.function.Supplier;

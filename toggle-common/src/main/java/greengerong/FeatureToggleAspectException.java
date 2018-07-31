@@ -1,6 +1,4 @@
-package com.github.greengerong;
-
-import java.util.Map;
+package greengerong;
 
 /******************************************
  *                                        *
@@ -10,6 +8,8 @@ import java.util.Map;
  * github: https://github.com/greengerong *
  *                                        *
  ******************************************/
-public interface FeaturesFetcher {
-    Map<String, Boolean> features();
+public class FeatureToggleAspectException extends RuntimeException {
+    public FeatureToggleAspectException(Throwable throwable) {
+        super(throwable);
+    }
 }

@@ -1,4 +1,4 @@
-package com.github.greengerong;
+package greengerong;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,6 +6,7 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -26,15 +27,15 @@ public class ToggleServiceTest {
     private final String disableFeature = "disable";
     @Mock
     private FeaturesFetcher featuresFetcher;
+    @InjectMocks
     private ToggleService toggleService;
 
     @Before
     public void setUp() throws Exception {
-        toggleService = new ToggleService(featuresFetcher);
         final Map<String, Boolean> features = new HashMap<>();
         features.put(enableFeature, true);
         features.put(disableFeature, false);
-        when(featuresFetcher.features()).thenReturn(features);
+        when(featuresFetcher.getFeatures()).thenReturn(features);
     }
 
     @Test
