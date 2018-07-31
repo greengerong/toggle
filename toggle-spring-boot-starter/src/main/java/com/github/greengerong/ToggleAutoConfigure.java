@@ -22,17 +22,51 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties(ToggleConfig.class)
 public class ToggleAutoConfigure {
 
-    @Bean
-    @ConditionalOnMissingBean
+
+    @Configuration
     @ConditionalOnProperty(prefix = "feature-toggle", value = "store-way", havingValue = "properties", matchIfMissing = true)
-    public ToggleService toggleService(@Autowired ToggleConfig toggleConfig) {
-        return new ToggleService(toggleConfig);
+    protected static class PropertiesToggleServiceConfiguration {
+
+        @Bean
+        @ConditionalOnMissingBean
+        public FeaturesFetcher propertiesFeaturesFetcher(@Autowired ToggleConfig toggleConfig) {
+            return new PropertiesFeaturesFetcher(toggleConfig);
+        }
+
+        @Bean
+        @ConditionalOnMissingBean
+        public ToggleService propertiesToggleService(@Autowired ToggleConfig toggleConfig, @Autowired FeaturesFetcher propertiesFeaturesFetcher) {
+            return new ToggleService(propertiesFeaturesFetcher, toggleConfig.isEnableOnEmpty());
+        }
+
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public FeatureToggleAspect featureToggleAspect(@Autowired ToggleService toggleService) {
-        return new FeatureToggleAspect(toggleService);
+    @Configuration
+    @ConditionalOnProperty(prefix = "feature-toggle", value = "store-way", havingValue = "jdbc")
+    protected static class JdbcToggleServiceConfiguration {
+        @Bean
+        @ConditionalOnMissingBean
+        public JdbcFeaturesFetcher jdbcFeaturesFetcher() {
+            return new JdbcFeaturesFetcher();
+        }
+
+        @Bean
+        @ConditionalOnMissingBean
+        public ToggleService jdbcToggleService(@Autowired ToggleConfig toggleConfig, @Autowired FeaturesFetcher jdbcFeaturesFetcher) {
+            return new ToggleService(jdbcFeaturesFetcher, toggleConfig.isEnableOnEmpty());
+        }
+    }
+
+
+    @Configuration
+    protected static class FeatureToggleAspectConfiguration {
+
+        @Bean
+        @ConditionalOnMissingBean
+        public FeatureToggleAspect featureToggleAspect(@Autowired ToggleService toggleService) {
+            return new FeatureToggleAspect(toggleService);
+        }
+
     }
 
     @Configuration

@@ -10,7 +10,17 @@ import java.util.Map;
  * github: https://github.com/greengerong *
  *                                        *
  ******************************************/
-public interface FeaturesFetcher {
 
-    Map<String, Boolean> getFeatures();
+public class PropertiesFeaturesFetcher implements FeaturesFetcher {
+
+    private final ToggleConfig toggleConfig;
+
+    public PropertiesFeaturesFetcher(ToggleConfig toggleConfig) {
+        this.toggleConfig = toggleConfig;
+    }
+
+    @Override
+    public Map<String, Boolean> getFeatures() {
+        return toggleConfig.getFeatures();
+    }
 }

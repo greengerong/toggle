@@ -14,13 +14,19 @@ import java.util.function.Supplier;
 public class ToggleService {
 
     private final FeaturesFetcher featuresFetcher;
+    private final boolean isEnableOnEmpty;
 
     public ToggleService(FeaturesFetcher featuresFetcher) {
+        this(featuresFetcher, false);
+    }
+
+    public ToggleService(FeaturesFetcher featuresFetcher, boolean isEnableOnEmpty) {
         this.featuresFetcher = featuresFetcher;
+        this.isEnableOnEmpty = isEnableOnEmpty;
     }
 
     public boolean isActive(String feature) {
-        return features().getOrDefault(feature, featuresFetcher.isEnableOnEmpty());
+        return features().getOrDefault(feature, isEnableOnEmpty);
     }
 
     public void toggle(String feature, Runnable enable) {

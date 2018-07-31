@@ -17,13 +17,12 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 @ConfigurationProperties("feature-toggle")
 @RefreshScope
-public class ToggleConfig implements FeaturesFetcher {
+public class ToggleConfig {
 
-    private boolean enableOnEmpty = true;
+    private boolean enableOnEmpty = false;
 
     private Map<String, Boolean> features = new HashMap<>();
 
-    @Override
     public Map<String, Boolean> getFeatures() {
         return features;
     }
@@ -32,7 +31,6 @@ public class ToggleConfig implements FeaturesFetcher {
         this.features = features;
     }
 
-    @Override
     public boolean isEnableOnEmpty() {
         return enableOnEmpty;
     }

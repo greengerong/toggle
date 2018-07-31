@@ -1,5 +1,6 @@
 package com.github.greengerong;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /******************************************
@@ -10,7 +11,12 @@ import java.util.Map;
  * github: https://github.com/greengerong *
  *                                        *
  ******************************************/
-public interface FeaturesFetcher {
+public class JdbcFeaturesFetcher implements FeaturesFetcher {
 
-    Map<String, Boolean> getFeatures();
+    @Override
+    public Map<String, Boolean> getFeatures() {
+        final HashMap<String, Boolean> map = new HashMap<>();
+        map.put("foo", true);
+        return map;
+    }
 }

@@ -6,7 +6,6 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -27,7 +26,6 @@ public class ToggleServiceTest {
     private final String disableFeature = "disable";
     @Mock
     private FeaturesFetcher featuresFetcher;
-    @InjectMocks
     private ToggleService toggleService;
 
     @Before
@@ -36,6 +34,7 @@ public class ToggleServiceTest {
         features.put(enableFeature, true);
         features.put(disableFeature, false);
         when(featuresFetcher.getFeatures()).thenReturn(features);
+        toggleService = new ToggleService(featuresFetcher);
     }
 
     @Test
