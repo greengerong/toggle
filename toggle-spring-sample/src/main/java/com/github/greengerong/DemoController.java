@@ -1,5 +1,7 @@
 package com.github.greengerong;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /******************************************
@@ -10,15 +12,18 @@ import org.springframework.web.bind.annotation.RestController;
  * github: https://github.com/greengerong *
  *                                        *
  ******************************************/
-@RestController("demo")
+@RestController()
+@RequestMapping("demo")
 public class DemoController {
 
-//    @FeatureToggle("foo")
+    @FeatureToggle("foo")
+    @GetMapping("foo")
     public String foo() {
         return "foo call";
     }
 
-//    @FeatureToggle("bar")
+    @FeatureToggle("bar")
+    @GetMapping("bar")
     public String bar() {
         return "bar call";
     }

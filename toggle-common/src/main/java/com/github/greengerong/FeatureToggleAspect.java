@@ -26,11 +26,11 @@ public class FeatureToggleAspect {
     @Around("@annotation(com.github.greengerong.FeatureToggle)")
     public Object toggle(ProceedingJoinPoint jp) {
 
-        return Optional.ofNullable((MethodSignature) jp.getSignature())
+        final Optional<String> feature = Optional.ofNullable((MethodSignature) jp.getSignature())
                 .map(signature -> signature.getMethod().getAnnotation(FeatureToggle.class))
-                .map(toggle -> toggle.value())
-                .map(feature -> toggleService.toggle(feature, () -> proceed(jp)))
-                .orElseGet(() -> proceed(jp));
+                .map(toggle -> toggle.value());
+
+        return feature.isPresent() ? toggleService.toggle(feature.get(), () -> proceed(jp)) : proceed(jp);
     }
 
     private Object proceed(ProceedingJoinPoint jp) {

@@ -1,6 +1,22 @@
 
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+
+
 feature-toggle:
   store-way: properties
   features:
-    foo: true
-    bar: false
+    foo: false
+    bar: true
+management:
+  endpoints:
+    enabled-by-default: true
+    web:
+      exposure:
+        include: health, info, feature-toggle
+
+
+
