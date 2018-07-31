@@ -14,14 +14,24 @@ import java.util.function.Supplier;
 public class ToggleService {
 
     private final FeaturesFetcher featuresFetcher;
+    private final FeaturesCache featuresCache;
     private final boolean isEnableOnEmpty;
 
     public ToggleService(FeaturesFetcher featuresFetcher) {
         this(featuresFetcher, false);
     }
 
+    public ToggleService(FeaturesFetcher featuresFetcher, FeaturesCache featuresCache) {
+        this(featuresFetcher, featuresCache, false);
+    }
+
     public ToggleService(FeaturesFetcher featuresFetcher, boolean isEnableOnEmpty) {
+        this(featuresFetcher, new ThreadLocalFeaturesCache(), isEnableOnEmpty);
+    }
+
+    public ToggleService(FeaturesFetcher featuresFetcher, FeaturesCache featuresCache, boolean isEnableOnEmpty) {
         this.featuresFetcher = featuresFetcher;
+        this.featuresCache = featuresCache;
         this.isEnableOnEmpty = isEnableOnEmpty;
     }
 
@@ -49,7 +59,7 @@ public class ToggleService {
     }
 
     public Map<String, Boolean> features() {
-        return this.featuresFetcher.getFeatures();
+        return featuresCache.getFeatures(featuresFetcher::getFeatures);
     }
 
 }

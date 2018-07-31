@@ -24,6 +24,17 @@ public class ToggleAutoConfigure {
 
 
     @Configuration
+    protected static class FeaturesCacheConfiguration {
+
+        @Bean
+        @ConditionalOnMissingBean
+        public FeaturesCache featuresCache() {
+            return new ThreadLocalFeaturesCache();
+        }
+
+    }
+
+    @Configuration
     @ConditionalOnProperty(prefix = "feature-toggle", value = "storage", havingValue = "properties", matchIfMissing = true)
     protected static class PropertiesToggleServiceConfiguration {
 
@@ -35,8 +46,10 @@ public class ToggleAutoConfigure {
 
         @Bean
         @ConditionalOnMissingBean
-        public ToggleService propertiesToggleService(@Autowired ToggleConfig toggleConfig, @Autowired FeaturesFetcher propertiesFeaturesFetcher) {
-            return new ToggleService(propertiesFeaturesFetcher, toggleConfig.isEnableOnEmpty());
+        public ToggleService propertiesToggleService(@Autowired ToggleConfig toggleConfig,
+                                                     @Autowired FeaturesFetcher propertiesFeaturesFetcher,
+                                                     @Autowired FeaturesCache featuresCache) {
+            return new ToggleService(propertiesFeaturesFetcher, featuresCache, toggleConfig.isEnableOnEmpty());
         }
 
     }
@@ -46,14 +59,16 @@ public class ToggleAutoConfigure {
     protected static class JdbcToggleServiceConfiguration {
         @Bean
         @ConditionalOnMissingBean
-        public JdbcFeaturesFetcher jdbcFeaturesFetcher() {
-            return new JdbcFeaturesFetcher();
+        public FeaturesFetcher jdbcFeaturesFetcher(@Autowired ToggleConfig toggleConfig) {
+            return new JdbcFeaturesFetcher(toggleConfig.getDataSource());
         }
 
         @Bean
         @ConditionalOnMissingBean
-        public ToggleService jdbcToggleService(@Autowired ToggleConfig toggleConfig, @Autowired FeaturesFetcher jdbcFeaturesFetcher) {
-            return new ToggleService(jdbcFeaturesFetcher, toggleConfig.isEnableOnEmpty());
+        public ToggleService jdbcToggleService(@Autowired ToggleConfig toggleConfig,
+                                               @Autowired FeaturesFetcher jdbcFeaturesFetcher,
+                                               @Autowired FeaturesCache featuresCache) {
+            return new ToggleService(jdbcFeaturesFetcher, featuresCache, toggleConfig.isEnableOnEmpty());
         }
     }
 

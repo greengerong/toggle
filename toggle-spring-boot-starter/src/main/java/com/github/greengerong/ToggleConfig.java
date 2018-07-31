@@ -2,6 +2,7 @@ package com.github.greengerong;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.sql.DataSource;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -18,10 +19,18 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 @ConfigurationProperties("feature-toggle")
 @RefreshScope
 public class ToggleConfig {
-
+    private String storage = "properties";
     private boolean enableOnEmpty = false;
-
+    private DataSource dataSource;
     private Map<String, Boolean> features = new HashMap<>();
+
+    public String getStorage() {
+        return storage;
+    }
+
+    public void setStorage(String storage) {
+        this.storage = storage;
+    }
 
     public Map<String, Boolean> getFeatures() {
         return features;
@@ -31,7 +40,20 @@ public class ToggleConfig {
         this.features = features;
     }
 
+
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
     public boolean isEnableOnEmpty() {
         return enableOnEmpty;
+    }
+
+    public void setEnableOnEmpty(boolean enableOnEmpty) {
+        this.enableOnEmpty = enableOnEmpty;
     }
 }
