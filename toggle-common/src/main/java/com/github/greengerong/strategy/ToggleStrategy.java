@@ -1,7 +1,4 @@
-package com.github.greengerong;
-
-import java.util.Map;
-import java.util.function.Supplier;
+package com.github.greengerong.strategy;
 
 /******************************************
  *                                        *
@@ -11,8 +8,8 @@ import java.util.function.Supplier;
  * github: https://github.com/greengerong *
  *                                        *
  ******************************************/
-public interface FeaturesCache {
+public interface ToggleStrategy {
 
-    Map<String, Boolean> getFeatures(Supplier<Map<String, Boolean>> loader);
+    boolean isActive(String feature, Object featureValue);
 
 }

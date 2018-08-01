@@ -1,6 +1,4 @@
-package com.github.greengerong;
-
-import java.util.Map;
+package com.github.greengerong.strategy;
 
 /******************************************
  *                                        *
@@ -10,7 +8,10 @@ import java.util.Map;
  * github: https://github.com/greengerong *
  *                                        *
  ******************************************/
-public interface FeaturesFetcher {
+public class SimpleToggleStrategy implements ToggleStrategy {
 
-    Map<String, Object> getFeatures();
+    @Override
+    public boolean isActive(String feature, Object featureValue) {
+        return Boolean.parseBoolean(featureValue.toString());
+    }
 }

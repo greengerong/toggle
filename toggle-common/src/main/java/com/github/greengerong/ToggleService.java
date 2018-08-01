@@ -3,6 +3,11 @@ package com.github.greengerong;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import com.github.greengerong.cache.FeaturesCache;
+import com.github.greengerong.cache.ThreadLocalFeaturesCache;
+import com.github.greengerong.strategy.SimpleToggleStrategy;
+import com.github.greengerong.strategy.ToggleStrategy;
+
 /******************************************
  *                                        *
  * Auth: green gerong                     *
@@ -14,29 +19,32 @@ import java.util.function.Supplier;
 public class ToggleService {
 
     private final FeaturesFetcher featuresFetcher;
-    private final FeaturesCache featuresCache;
     private final boolean isEnableOnEmpty;
+    private FeaturesCache featuresCache;
+    private ToggleStrategy toggleStrategy;
 
     public ToggleService(FeaturesFetcher featuresFetcher) {
         this(featuresFetcher, false);
     }
 
-    public ToggleService(FeaturesFetcher featuresFetcher, FeaturesCache featuresCache) {
-        this(featuresFetcher, featuresCache, false);
-    }
-
     public ToggleService(FeaturesFetcher featuresFetcher, boolean isEnableOnEmpty) {
-        this(featuresFetcher, new ThreadLocalFeaturesCache(), isEnableOnEmpty);
+        this.featuresFetcher = featuresFetcher;
+        this.isEnableOnEmpty = isEnableOnEmpty;
+        toggleStrategy = new SimpleToggleStrategy();
+        featuresCache = new ThreadLocalFeaturesCache();
     }
 
-    public ToggleService(FeaturesFetcher featuresFetcher, FeaturesCache featuresCache, boolean isEnableOnEmpty) {
-        this.featuresFetcher = featuresFetcher;
+    public void setFeaturesCache(FeaturesCache featuresCache) {
         this.featuresCache = featuresCache;
-        this.isEnableOnEmpty = isEnableOnEmpty;
+    }
+
+    public void setToggleStrategy(ToggleStrategy toggleStrategy) {
+        this.toggleStrategy = toggleStrategy;
     }
 
     public boolean isActive(String feature) {
-        return features().getOrDefault(feature, isEnableOnEmpty);
+        final Object value = features().get(feature);
+        return value == null ? isEnableOnEmpty : toggleStrategy.isActive(feature, value);
     }
 
     public void toggle(String feature, Runnable enable) {
@@ -58,7 +66,7 @@ public class ToggleService {
         return runnable.get();
     }
 
-    public Map<String, Boolean> features() {
+    public Map<String, Object> features() {
         return featuresCache.getFeatures(featuresFetcher::getFeatures);
     }
 

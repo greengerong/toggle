@@ -1,6 +1,9 @@
-package com.github.greengerong;
+package com.github.greengerong.fetcher;
 
 import java.util.Map;
+
+import com.github.greengerong.FeaturesFetcher;
+import com.github.greengerong.config.ToggleConfig;
 
 /******************************************
  *                                        *
@@ -20,7 +23,7 @@ public class PropertiesFeaturesFetcher implements FeaturesFetcher {
     }
 
     @Override
-    public Map<String, Boolean> getFeatures() {
+    public Map<String, Object> getFeatures() {
         return toggleConfig.getFeatures();
     }
 }

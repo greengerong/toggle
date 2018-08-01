@@ -30,7 +30,7 @@ public class ToggleServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        final Map<String, Boolean> features = new HashMap<>();
+        final Map<String, Object> features = new HashMap<>();
         features.put(enableFeature, true);
         features.put(disableFeature, false);
         when(featuresFetcher.getFeatures()).thenReturn(features);

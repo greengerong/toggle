@@ -1,4 +1,7 @@
-package com.github.greengerong;
+package com.github.greengerong.cache;
+
+import java.util.Map;
+import java.util.function.Supplier;
 
 /******************************************
  *                                        *
@@ -8,8 +11,8 @@ package com.github.greengerong;
  * github: https://github.com/greengerong *
  *                                        *
  ******************************************/
-public class FeatureToggleAspectException extends RuntimeException {
-    public FeatureToggleAspectException(Throwable throwable) {
-        super(throwable);
-    }
+public interface FeaturesCache {
+
+    Map<String, Object> getFeatures(Supplier<Map<String, Object>> loader);
+
 }

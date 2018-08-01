@@ -1,4 +1,4 @@
-package com.github.greengerong;
+package com.github.greengerong.config;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +20,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 public class ToggleConfig {
     private String storage = "properties";
     private boolean enableOnEmpty = false;
-    private Map<String, Boolean> features = new HashMap<>();
+    private Map<String, Object> features = new HashMap<>();
 
     public String getStorage() {
         return storage;
@@ -30,11 +30,11 @@ public class ToggleConfig {
         this.storage = storage;
     }
 
-    public Map<String, Boolean> getFeatures() {
+    public Map<String, Object> getFeatures() {
         return features;
     }
 
-    public void setFeatures(Map<String, Boolean> features) {
+    public void setFeatures(Map<String, Object> features) {
         this.features = features;
     }
 

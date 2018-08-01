@@ -1,5 +1,14 @@
 package com.github.greengerong;
 
+import com.github.greengerong.aspect.FeatureToggleAspect;
+import com.github.greengerong.cache.FeaturesCache;
+import com.github.greengerong.cache.ThreadLocalFeaturesCache;
+import com.github.greengerong.config.ToggleConfig;
+import com.github.greengerong.fetcher.JdbcFeaturesFetcher;
+import com.github.greengerong.fetcher.PropertiesFeaturesFetcher;
+import com.github.greengerong.strategy.SimpleToggleStrategy;
+import com.github.greengerong.strategy.ToggleStrategy;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -36,6 +45,17 @@ public class ToggleAutoConfigure {
     }
 
     @Configuration
+    protected static class ToggleStrategyConfiguration {
+
+        @Bean
+        @ConditionalOnMissingBean
+        public ToggleStrategy featuresCache() {
+            return new SimpleToggleStrategy();
+        }
+
+    }
+
+    @Configuration
     @ConditionalOnProperty(prefix = "feature-toggle", value = "storage", havingValue = "properties", matchIfMissing = true)
     protected static class PropertiesToggleServiceConfiguration {
 
@@ -65,8 +85,12 @@ public class ToggleAutoConfigure {
         @ConditionalOnMissingBean
         public ToggleService toggleService(@Autowired ToggleConfig toggleConfig,
                                            @Autowired FeaturesFetcher featuresFetcher,
-                                           @Autowired FeaturesCache featuresCache) {
-            return new ToggleService(featuresFetcher, featuresCache, toggleConfig.isEnableOnEmpty());
+                                           @Autowired FeaturesCache featuresCache,
+                                           @Autowired ToggleStrategy toggleStrategy) {
+            final ToggleService toggleService = new ToggleService(featuresFetcher, toggleConfig.isEnableOnEmpty());
+            toggleService.setFeaturesCache(featuresCache);
+            toggleService.setToggleStrategy(toggleStrategy);
+            return toggleService;
         }
     }
 

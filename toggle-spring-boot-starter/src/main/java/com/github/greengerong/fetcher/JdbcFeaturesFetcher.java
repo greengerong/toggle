@@ -1,7 +1,9 @@
-package com.github.greengerong;
+package com.github.greengerong.fetcher;
 
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import com.github.greengerong.FeaturesFetcher;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -22,7 +24,7 @@ public class JdbcFeaturesFetcher implements FeaturesFetcher {
     }
 
     @Override
-    public Map<String, Boolean> getFeatures() {
+    public Map<String, Object> getFeatures() {
         return this.jdbcTemplate
                 .queryForList("SELECT FEATURE, FEATURE_VALUE FROM TOGGLE_FEATURES")
                 .stream()

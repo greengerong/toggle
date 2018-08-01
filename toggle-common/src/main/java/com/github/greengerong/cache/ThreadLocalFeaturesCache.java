@@ -1,4 +1,4 @@
-package com.github.greengerong;
+package com.github.greengerong.cache;
 
 import java.util.Map;
 import java.util.function.Supplier;
@@ -12,11 +12,11 @@ import java.util.function.Supplier;
  *                                        *
  ******************************************/
 public class ThreadLocalFeaturesCache implements FeaturesCache {
-    private static final ThreadLocal<Map<String, Boolean>> threadLocal = new ThreadLocal<>();
+    private static final ThreadLocal<Map<String, Object>> threadLocal = new ThreadLocal<>();
 
     @Override
-    public Map<String, Boolean> getFeatures(Supplier<Map<String, Boolean>> loader) {
-        Map<String, Boolean> features = threadLocal.get();
+    public Map<String, Object> getFeatures(Supplier<Map<String, Object>> loader) {
+        Map<String, Object> features = threadLocal.get();
         if (features == null) {
             features = loader.get();
             threadLocal.set(features);

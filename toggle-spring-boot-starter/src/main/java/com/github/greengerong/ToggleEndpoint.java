@@ -23,7 +23,7 @@ public class ToggleEndpoint {
     }
 
     @ReadOperation
-    public Map<String, Boolean> features() {
+    public Map<String, Object> features() {
         return toggleService.features();
     }
 }

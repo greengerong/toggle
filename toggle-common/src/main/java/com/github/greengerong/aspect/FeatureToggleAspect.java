@@ -1,6 +1,9 @@
-package com.github.greengerong;
+package com.github.greengerong.aspect;
 
 import java.util.Optional;
+
+import com.github.greengerong.exception.FeatureToggleAspectException;
+import com.github.greengerong.ToggleService;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -23,7 +26,7 @@ public class FeatureToggleAspect {
         this.toggleService = toggleService;
     }
 
-    @Around("@annotation(com.github.greengerong.FeatureToggle)")
+    @Around("@annotation(com.github.greengerong.aspect.FeatureToggle)")
     public Object toggle(ProceedingJoinPoint jp) {
 
         final Optional<String> feature = Optional.ofNullable((MethodSignature) jp.getSignature())
