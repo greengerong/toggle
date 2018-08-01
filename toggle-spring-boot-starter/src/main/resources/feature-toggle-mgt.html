@@ -126,7 +126,6 @@
             $.ajax({url: './feature-toggle-mgt?feature=' + encodeURI(feature), type: 'DELETE'})
                 .then(function () {
                     loadFeatures();
-                    alert(feature + ' delete success.')
                 }, function () {
                     alert(feature + ' delete error.')
                 });
@@ -163,7 +162,6 @@
                 })
                     .then(function () {
                         loadFeatures();
-                        alert(feature + ' save success.')
                     }, function () {
                         alert(feature + ' save error.')
                     });

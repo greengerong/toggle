@@ -3,7 +3,7 @@ package com.github.greengerong;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import com.github.greengerong.management.JdbcManagementService;
+import com.github.greengerong.management.ManagementService;
 
 import org.springframework.boot.actuate.endpoint.annotation.DeleteOperation;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
@@ -21,9 +21,9 @@ import org.springframework.boot.actuate.endpoint.annotation.WriteOperation;
 @Endpoint(id = "feature-toggle-mgt")
 public class ToggleManagementEndpoint {
 
-    private final JdbcManagementService managementService;
+    private final ManagementService managementService;
 
-    public ToggleManagementEndpoint(JdbcManagementService managementService) {
+    public ToggleManagementEndpoint(ManagementService managementService) {
         this.managementService = managementService;
     }
 

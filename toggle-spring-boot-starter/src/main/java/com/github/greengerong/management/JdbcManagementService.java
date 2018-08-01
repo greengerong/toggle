@@ -14,13 +14,14 @@ import org.springframework.util.CollectionUtils;
  *                                        *
  ******************************************/
 
-public class JdbcManagementService {
+public class JdbcManagementService implements ManagementService {
     private JdbcTemplate jdbcTemplate;
 
     public JdbcManagementService(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @Override
     public void saveFeatures(String feature, String value) {
         final List<Integer> ids = jdbcTemplate
                 .queryForList("SELECT ID FROM TOGGLE_FEATURES WHERE FEATURE = ?", new Object[]{feature}, Integer.class);
@@ -33,6 +34,7 @@ public class JdbcManagementService {
         jdbcTemplate.update("INSERT INTO TOGGLE_FEATURES (FEATURE, FEATURE_VALUE) VALUES (?, ?)", feature, value);
     }
 
+    @Override
     public void deleteFeature(String feature) {
         jdbcTemplate.update("DELETE FROM TOGGLE_FEATURES WHERE FEATURE = ?", feature);
     }

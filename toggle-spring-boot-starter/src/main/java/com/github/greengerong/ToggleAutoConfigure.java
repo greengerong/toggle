@@ -7,10 +7,12 @@ import com.github.greengerong.config.ToggleConfig;
 import com.github.greengerong.fetcher.JdbcFeaturesFetcher;
 import com.github.greengerong.fetcher.PropertiesFeaturesFetcher;
 import com.github.greengerong.management.JdbcManagementService;
+import com.github.greengerong.management.ManagementService;
 import com.github.greengerong.strategy.SimpleToggleStrategy;
 import com.github.greengerong.strategy.ToggleStrategy;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -79,13 +81,18 @@ public class ToggleAutoConfigure {
 
         @Bean
         @ConditionalOnMissingBean
-        public JdbcManagementService jdbcManagementService(@Autowired JdbcTemplate jdbcTemplate) {
+        public ManagementService jdbcManagementService(@Autowired JdbcTemplate jdbcTemplate) {
             return new JdbcManagementService(jdbcTemplate);
         }
+    }
+
+    @Configuration
+    protected static class ToggleManagementEndpointConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        public ToggleManagementEndpoint toggleManagementEndpoint(@Autowired JdbcManagementService managementService) {
+        @ConditionalOnBean(ManagementService.class)
+        public ToggleManagementEndpoint toggleManagementEndpoint(@Autowired ManagementService managementService) {
             return new ToggleManagementEndpoint(managementService);
         }
     }
