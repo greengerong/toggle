@@ -23,7 +23,6 @@ public class ThreadLocalFeaturesCacheTest {
         //given
         final Map<String, Object> feature = new HashMap<>();
         feature.put("count", 0);
-        boolean loaderCalled = false;
 
         //when
         final Map<String, Object> result = threadLocalFeaturesCache.getFeatures(() -> cacheLoader(feature));
@@ -38,7 +37,6 @@ public class ThreadLocalFeaturesCacheTest {
         //given
         final Map<String, Object> feature = new HashMap<>();
         feature.put("count", 0);
-        boolean loaderCalled = false;
 
         //when
         threadLocalFeaturesCache.getFeatures(() -> cacheLoader(feature));
