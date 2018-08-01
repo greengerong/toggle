@@ -29,14 +29,15 @@ public class JdbcFeaturesFetcher implements FeaturesFetcher {
                 .queryForList("SELECT FEATURE, FEATURE_VALUE FROM TOGGLE_FEATURES")
                 .stream()
                 .filter(it -> !getFeatureKey(it).isEmpty() && !getFeatureValue(it).isEmpty())
-                .collect(Collectors.toMap(it -> getFeatureKey(it), it -> Boolean.parseBoolean(getFeatureValue(it))));
+                .collect(Collectors.toMap(this::getFeatureKey, this::getFeatureValue));
+    }
+
+    private String getFeatureKey(Map<String, Object> it) {
+        return it.getOrDefault("FEATURE", "").toString().trim();
     }
 
     private String getFeatureValue(Map<String, Object> it) {
         return it.getOrDefault("FEATURE_VALUE", "").toString().trim();
     }
 
-    private String getFeatureKey(Map<String, Object> it) {
-        return it.getOrDefault("FEATURE", "").toString().trim();
-    }
 }
