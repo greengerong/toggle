@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /******************************************
  *                                        *
@@ -51,8 +52,8 @@ public class ToggleAutoConfigure {
     protected static class JdbcToggleServiceConfiguration {
         @Bean
         @ConditionalOnMissingBean
-        public FeaturesFetcher jdbcFeaturesFetcher(@Autowired ToggleConfig toggleConfig) {
-            return new JdbcFeaturesFetcher(toggleConfig.getDataSource());
+        public FeaturesFetcher jdbcFeaturesFetcher(@Autowired JdbcTemplate jdbcTemplate) {
+            return new JdbcFeaturesFetcher(jdbcTemplate);
         }
     }
 

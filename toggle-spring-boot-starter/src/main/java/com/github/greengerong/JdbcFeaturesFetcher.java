@@ -2,7 +2,6 @@ package com.github.greengerong;
 
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -18,8 +17,8 @@ public class JdbcFeaturesFetcher implements FeaturesFetcher {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public JdbcFeaturesFetcher(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    public JdbcFeaturesFetcher(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
@@ -27,7 +26,7 @@ public class JdbcFeaturesFetcher implements FeaturesFetcher {
         return this.jdbcTemplate
                 .queryForList("SELECT FEATURE, FEATURE_VALUE FROM TOGGLE_FEATURES")
                 .stream()
-                .filter(it -> getFeatureKey(it).isEmpty() || getFeatureValue(it).isEmpty())
+                .filter(it -> !getFeatureKey(it).isEmpty() && !getFeatureValue(it).isEmpty())
                 .collect(Collectors.toMap(it -> getFeatureKey(it), it -> Boolean.parseBoolean(getFeatureValue(it))));
     }
 
