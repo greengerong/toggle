@@ -6,6 +6,7 @@ import com.github.greengerong.cache.ThreadLocalFeaturesCache;
 import com.github.greengerong.config.ToggleConfig;
 import com.github.greengerong.fetcher.JdbcFeaturesFetcher;
 import com.github.greengerong.fetcher.PropertiesFeaturesFetcher;
+import com.github.greengerong.management.JdbcManagementService;
 import com.github.greengerong.strategy.SimpleToggleStrategy;
 import com.github.greengerong.strategy.ToggleStrategy;
 
@@ -38,7 +39,7 @@ public class ToggleAutoConfigure {
 
         @Bean
         @ConditionalOnMissingBean
-        public FeaturesCache featuresCache() {
+        public FeaturesCache threadLocalFeaturesCache() {
             return new ThreadLocalFeaturesCache();
         }
 
@@ -49,7 +50,7 @@ public class ToggleAutoConfigure {
 
         @Bean
         @ConditionalOnMissingBean
-        public ToggleStrategy featuresCache() {
+        public ToggleStrategy simpleToggleStrategy() {
             return new SimpleToggleStrategy();
         }
 
@@ -74,6 +75,18 @@ public class ToggleAutoConfigure {
         @ConditionalOnMissingBean
         public FeaturesFetcher jdbcFeaturesFetcher(@Autowired JdbcTemplate jdbcTemplate) {
             return new JdbcFeaturesFetcher(jdbcTemplate);
+        }
+
+        @Bean
+        @ConditionalOnMissingBean
+        public JdbcManagementService jdbcManagementService(@Autowired JdbcTemplate jdbcTemplate) {
+            return new JdbcManagementService(jdbcTemplate);
+        }
+
+        @Bean
+        @ConditionalOnMissingBean
+        public ToggleManagementEndpoint toggleManagementEndpoint(@Autowired JdbcManagementService managementService) {
+            return new ToggleManagementEndpoint(managementService);
         }
     }
 

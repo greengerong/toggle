@@ -12,7 +12,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
 
 feature-toggle:
-#  storage: jdbc
+  storage: jdbc
   features:
     foo: false
     bar: true
@@ -21,7 +21,7 @@ management:
     enabled-by-default: true
     web:
       exposure:
-        include: health, info, feature-toggle
+        include: health, info, feature-toggle, feature-toggle-mgt
 
 
 
