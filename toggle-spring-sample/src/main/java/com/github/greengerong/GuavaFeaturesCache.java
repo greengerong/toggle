@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class GuavaFeaturesCache implements FeaturesCache {
 
-    private final Cache cache = CacheBuilder.newBuilder().expireAfterAccess(5, TimeUnit.MINUTES).build();
+    private final Cache cache = CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.MINUTES).build();
 
     @Override
     public Map<String, Object> getFeatures(Supplier<Map<String, Object>> loader) {
