@@ -44,14 +44,6 @@ public class ToggleAutoConfigure {
             return new PropertiesFeaturesFetcher(toggleConfig);
         }
 
-        @Bean
-        @ConditionalOnMissingBean
-        public ToggleService propertiesToggleService(@Autowired ToggleConfig toggleConfig,
-                                                     @Autowired FeaturesFetcher propertiesFeaturesFetcher,
-                                                     @Autowired FeaturesCache featuresCache) {
-            return new ToggleService(propertiesFeaturesFetcher, featuresCache, toggleConfig.isEnableOnEmpty());
-        }
-
     }
 
     @Configuration
@@ -62,13 +54,18 @@ public class ToggleAutoConfigure {
         public FeaturesFetcher jdbcFeaturesFetcher(@Autowired ToggleConfig toggleConfig) {
             return new JdbcFeaturesFetcher(toggleConfig.getDataSource());
         }
+    }
+
+
+    @Configuration
+    protected static class ToggleServiceConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        public ToggleService jdbcToggleService(@Autowired ToggleConfig toggleConfig,
-                                               @Autowired FeaturesFetcher jdbcFeaturesFetcher,
-                                               @Autowired FeaturesCache featuresCache) {
-            return new ToggleService(jdbcFeaturesFetcher, featuresCache, toggleConfig.isEnableOnEmpty());
+        public ToggleService toggleService(@Autowired ToggleConfig toggleConfig,
+                                           @Autowired FeaturesFetcher featuresFetcher,
+                                           @Autowired FeaturesCache featuresCache) {
+            return new ToggleService(featuresFetcher, featuresCache, toggleConfig.isEnableOnEmpty());
         }
     }
 
