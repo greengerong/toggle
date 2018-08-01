@@ -12,7 +12,7 @@ import java.util.function.Supplier;
  *                                        *
  ******************************************/
 public class ThreadLocalFeaturesCache implements FeaturesCache {
-    private static final ThreadLocal<Map<String, Object>> threadLocal = new ThreadLocal<>();
+    private final ThreadLocal<Map<String, Object>> threadLocal = new ThreadLocal<>();
 
     @Override
     public Map<String, Object> getFeatures(Supplier<Map<String, Object>> loader) {
