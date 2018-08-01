@@ -67,7 +67,11 @@ public class ToggleService {
     }
 
     public Map<String, Object> features() {
-        return featuresCache.getFeatures(featuresFetcher::getFeatures);
+        return featuresCache.getFeatures(this::loadFeature);
+    }
+
+    public Map<String, Object> loadFeature() {
+        return featuresFetcher.getFeatures();
     }
 
 }

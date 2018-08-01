@@ -24,6 +24,6 @@ public class ToggleEndpoint {
 
     @ReadOperation
     public Map<String, Object> features() {
-        return toggleService.features();
+        return toggleService.loadFeature();
     }
 }

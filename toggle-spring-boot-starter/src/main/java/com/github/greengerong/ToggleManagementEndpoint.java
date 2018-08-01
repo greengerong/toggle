@@ -1,9 +1,13 @@
 package com.github.greengerong;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import com.github.greengerong.management.JdbcManagementService;
 
 import org.springframework.boot.actuate.endpoint.annotation.DeleteOperation;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
+import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.boot.actuate.endpoint.annotation.WriteOperation;
 
 /******************************************
@@ -21,6 +25,11 @@ public class ToggleManagementEndpoint {
 
     public ToggleManagementEndpoint(JdbcManagementService managementService) {
         this.managementService = managementService;
+    }
+
+    @ReadOperation(produces = {"text/html; charset=UTF-8"})
+    public String features() throws Exception {
+        return new String(Files.readAllBytes(Paths.get(getClass().getResource("/feature-toggle-mgt.html").toURI())));
     }
 
     @WriteOperation
