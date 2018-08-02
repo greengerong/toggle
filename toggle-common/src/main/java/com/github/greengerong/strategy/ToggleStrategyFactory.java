@@ -12,7 +12,7 @@ import java.util.List;
  ******************************************/
 public class ToggleStrategyFactory {
 
-    public static final String STRATEGY_SEPARATOR = "|";
+    public static final String STRATEGY_SEPARATOR = "=";
     private List<ToggleStrategy> strategies;
 
     public ToggleStrategyFactory(List<ToggleStrategy> strategies) {

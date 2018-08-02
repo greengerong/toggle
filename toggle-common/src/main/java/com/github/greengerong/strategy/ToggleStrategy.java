@@ -12,6 +12,6 @@ public interface ToggleStrategy {
 
     String keyword();
 
-    boolean isActive(String feature, Object featureValue);
+    boolean isActive(String feature, String featureValue);
 
 }

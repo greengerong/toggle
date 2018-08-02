@@ -8,6 +8,7 @@ feature-toggle:
   features:
     foo: false
     bar: true
+    gray: gray= 5, 8, 10
 
 management:
   endpoints:
