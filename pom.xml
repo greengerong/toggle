@@ -12,6 +12,7 @@
         <module>toggle-common</module>
         <module>toggle-spring-boot-starter</module>
         <module>samples/toggle-spring-sample</module>
+        <module>samples/toggle-spring-jdbc-sample</module>
     </modules>
 
     <properties>
