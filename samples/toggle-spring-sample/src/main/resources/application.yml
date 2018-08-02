@@ -8,6 +8,7 @@ feature-toggle:
   features:
     foo: false
     bar: true
+
 management:
   endpoints:
     enabled-by-default: true

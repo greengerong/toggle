@@ -15,13 +15,12 @@ import static org.assertj.core.api.Assertions.assertThat;
  *                                        *
  ******************************************/
 @RunWith(MockitoJUnitRunner.class)
-public class SimpleToggleStrategyTest {
+public class ToggleStrategyFactoryTest {
     @InjectMocks
-    private SimpleToggleStrategy strategy;
+    private ToggleStrategyFactory strategy;
 
     @Test
     public void should_get_feature_enable() throws Exception {
         assertThat(strategy.isActive("", "TRUE")).isTrue();
-
     }
 }

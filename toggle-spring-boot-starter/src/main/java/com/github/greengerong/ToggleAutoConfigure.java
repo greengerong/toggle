@@ -1,5 +1,7 @@
 package com.github.greengerong;
 
+import java.util.List;
+
 import com.github.greengerong.aspect.FeatureToggleAspect;
 import com.github.greengerong.cache.FeaturesCache;
 import com.github.greengerong.cache.ThreadLocalFeaturesCache;
@@ -8,8 +10,8 @@ import com.github.greengerong.fetcher.JdbcFeaturesFetcher;
 import com.github.greengerong.fetcher.PropertiesFeaturesFetcher;
 import com.github.greengerong.management.JdbcManagementService;
 import com.github.greengerong.management.ManagementService;
-import com.github.greengerong.strategy.SimpleToggleStrategy;
 import com.github.greengerong.strategy.ToggleStrategy;
+import com.github.greengerong.strategy.ToggleStrategyFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -52,8 +54,8 @@ public class ToggleAutoConfigure {
 
         @Bean
         @ConditionalOnMissingBean
-        public ToggleStrategy simpleToggleStrategy() {
-            return new SimpleToggleStrategy();
+        public ToggleStrategyFactory toggleStrategyFactory(@Autowired(required = false) List<ToggleStrategy> strategies) {
+            return new ToggleStrategyFactory(strategies);
         }
 
     }
@@ -106,10 +108,10 @@ public class ToggleAutoConfigure {
         public ToggleService toggleService(@Autowired ToggleConfig toggleConfig,
                                            @Autowired FeaturesFetcher featuresFetcher,
                                            @Autowired FeaturesCache featuresCache,
-                                           @Autowired ToggleStrategy toggleStrategy) {
+                                           @Autowired ToggleStrategyFactory toggleStrategyFactory) {
             final ToggleService toggleService = new ToggleService(featuresFetcher, toggleConfig.isEnableOnEmpty());
             toggleService.setFeaturesCache(featuresCache);
-            toggleService.setToggleStrategy(toggleStrategy);
+            toggleService.setToggleStrategyFactory(toggleStrategyFactory);
             return toggleService;
         }
     }

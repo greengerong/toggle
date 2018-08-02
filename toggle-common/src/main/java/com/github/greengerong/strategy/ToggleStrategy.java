@@ -10,6 +10,8 @@ package com.github.greengerong.strategy;
  ******************************************/
 public interface ToggleStrategy {
 
+    String keyword();
+
     boolean isActive(String feature, Object featureValue);
 
 }

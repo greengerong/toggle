@@ -1,12 +1,12 @@
 package com.github.greengerong;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.function.Supplier;
 
 import com.github.greengerong.cache.FeaturesCache;
 import com.github.greengerong.cache.ThreadLocalFeaturesCache;
-import com.github.greengerong.strategy.SimpleToggleStrategy;
-import com.github.greengerong.strategy.ToggleStrategy;
+import com.github.greengerong.strategy.ToggleStrategyFactory;
 
 /******************************************
  *                                        *
@@ -21,7 +21,7 @@ public class ToggleService {
     private final FeaturesFetcher featuresFetcher;
     private final boolean isEnableOnEmpty;
     private FeaturesCache featuresCache;
-    private ToggleStrategy toggleStrategy;
+    private ToggleStrategyFactory toggleStrategyFactory;
 
     public ToggleService(FeaturesFetcher featuresFetcher) {
         this(featuresFetcher, false);
@@ -30,7 +30,7 @@ public class ToggleService {
     public ToggleService(FeaturesFetcher featuresFetcher, boolean isEnableOnEmpty) {
         this.featuresFetcher = featuresFetcher;
         this.isEnableOnEmpty = isEnableOnEmpty;
-        toggleStrategy = new SimpleToggleStrategy();
+        toggleStrategyFactory = new ToggleStrategyFactory(new ArrayList<>());
         featuresCache = new ThreadLocalFeaturesCache();
     }
 
@@ -38,13 +38,13 @@ public class ToggleService {
         this.featuresCache = featuresCache;
     }
 
-    public void setToggleStrategy(ToggleStrategy toggleStrategy) {
-        this.toggleStrategy = toggleStrategy;
+    public void setToggleStrategyFactory(ToggleStrategyFactory toggleStrategyFactory) {
+        this.toggleStrategyFactory = toggleStrategyFactory;
     }
 
     public boolean isActive(String feature) {
         final Object value = features().get(feature);
-        return value == null ? isEnableOnEmpty : toggleStrategy.isActive(feature, value);
+        return value == null ? isEnableOnEmpty : toggleStrategyFactory.isActive(feature, value);
     }
 
     public void toggle(String feature, Runnable enable) {
